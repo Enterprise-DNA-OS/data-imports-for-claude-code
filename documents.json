@@ -1,11 +1,60 @@
 [
   {
-    "name": "example",
-    "title": "TODO(author): the first document this industry must produce",
-    "for_each": "select gen_random_uuid() as id, 'Example' as name",
-    "file": "name",
+    "name": "correction-request",
+    "title": "Draft correction request",
+    "for_each": "select id,code from batches",
+    "file": "code",
     "sections": [
-      { "title": "Details", "sql": "select 'replace me' as item, $1::text as record_id" }
+      {
+        "title": "Batch",
+        "layout": "record",
+        "sql": "select code,name,source_name,due_date,status from batches where id=$1"
+      },
+      {
+        "title": "Fields to correct",
+        "sql": "select row_number,field,rule,message from exception_queue where batch=(select code from batches where id=$1)",
+        "note": "Review internally before sharing. No message has been sent."
+      }
+    ]
+  },
+  {
+    "name": "acceptance-record",
+    "title": "Batch acceptance record",
+    "for_each": "select id,code from batches",
+    "file": "code",
+    "sections": [
+      {
+        "title": "Review decision",
+        "layout": "record",
+        "sql": "select code,name,status,imported_by,edited_by,validated_at,approved_by,approved_at,approval_note from batches where id=$1"
+      },
+      {
+        "title": "Validation runs",
+        "sql": "select actor,accepted_rows,rejected_rows,error_count,created_at from validations where batch_id=$1 order by created_at"
+      },
+      {
+        "title": "Excluded source rows",
+        "sql": "select row_number,exclusion_reason from import_rows where batch_id=$1 and excluded order by row_number",
+        "note": "Blank approval means this batch has not been accepted."
+      }
+    ]
+  },
+  {
+    "name": "handover-manifest",
+    "title": "Local file handover manifest",
+    "for_each": "select id,code from batches",
+    "file": "code",
+    "sections": [
+      {
+        "title": "Source identity",
+        "layout": "record",
+        "sql": "select code,source_name,source_hash,status from batches where id=$1"
+      },
+      {
+        "title": "File receipt",
+        "sql": "select destination,content_hash,row_count,actor,created_at from receipts where batch_id=$1",
+        "note": "A local export receipt does not prove a destination system has loaded the data."
+      }
     ]
   }
 ]

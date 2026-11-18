@@ -1,13 +1,31 @@
 [
   {
     "name": "week",
-    "title": "This week",
-    "subtitle": "Data Imports for Claude Code: what needs attention, rendered by npm run view",
+    "title": "This week in data imports",
     "sections": [
       {
-        "title": "Needs attention",
-        "note": "TODO(author): point this at the industry's attention view (overdue, stuck, quiet).",
-        "sql": "select 'replace me' as item, 'TODO(author)' as why"
+        "title": "Batch register",
+        "sql": "select code,name,project,owner,due_date,status,total_rows,rows_with_errors from batch_week order by due_date,code"
+      }
+    ]
+  },
+  {
+    "name": "exceptions",
+    "title": "Row corrections to resolve",
+    "sections": [
+      {
+        "title": "Exceptions by owner",
+        "sql": "select * from exception_queue order by owner,batch,row_number"
+      }
+    ]
+  },
+  {
+    "name": "controls",
+    "title": "Accuracy and retention review",
+    "sections": [
+      {
+        "title": "Recorded control checks",
+        "sql": "select * from compliance_checks order by batch,rule"
       }
     ]
   }

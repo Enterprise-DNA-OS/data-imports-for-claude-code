@@ -1,0 +1,35 @@
+
+> data-imports-for-claude-code@0.1.0 demo
+> node scripts/demo.mjs
+
+
+$ npm run imports -- attention
+  code      project     owner   due_date    status   total_rows  rows_with_errors
+  --------  ----------  ------  ----------  -------  ----------  ----------------
+  NORTH-01  DEMO-NORTH  Morgan  2026-11-16  invalid  2           1               
+
+$ npm run imports -- exception-queue
+  batch     owner   row_number  field       rule   message                  
+  --------  ------  ----------  ----------  -----  -------------------------
+  NORTH-01  Morgan  2           email       email  Expected an email address
+  NORTH-01  Morgan  2           terms_days  max    Must be at most 90       
+
+$ npm run imports -- compliance
+  batch     rule              source              finding                                                     
+  --------  ----------------  ------------------  ------------------------------------------------------------
+  NORTH-01  accuracy-review   NZ IPP8 / AU APP10  Validate and independently approve this batch before use    
+  SOUTH-01  accuracy-review   NZ IPP8 / AU APP10  Validate and independently approve this batch before use    
+  SOUTH-01  retention-review  NZ IPP9             Retention purpose review is due; do not hand over until r...
+view: ../../../../../tmp/data-imports-demo-jD87OL/views/week.html
+view: ../../../../../tmp/data-imports-demo-jD87OL/views/exceptions.html
+view: ../../../../../tmp/data-imports-demo-jD87OL/views/controls.html
+
+doc: ../../../../../tmp/data-imports-demo-jD87OL/docs-out/correction-request/north-01-30000000-0000-4000-8000-000000000001.html
+doc: ../../../../../tmp/data-imports-demo-jD87OL/docs-out/correction-request/south-01-30000000-0000-4000-8000-000000000002.html
+doc: ../../../../../tmp/data-imports-demo-jD87OL/docs-out/acceptance-record/north-01-30000000-0000-4000-8000-000000000001.html
+doc: ../../../../../tmp/data-imports-demo-jD87OL/docs-out/acceptance-record/south-01-30000000-0000-4000-8000-000000000002.html
+doc: ../../../../../tmp/data-imports-demo-jD87OL/docs-out/handover-manifest/north-01-30000000-0000-4000-8000-000000000001.html
+doc: ../../../../../tmp/data-imports-demo-jD87OL/docs-out/handover-manifest/south-01-30000000-0000-4000-8000-000000000002.html
+6 document(s) rendered
+
+Fictional demonstration retained at /tmp/data-imports-demo-jD87OL

@@ -1,115 +1,89 @@
-<h1 align="center">Data Imports for Claude Code</h1>
+# Data Imports for Claude Code
 
-<p align="center">
-  <strong>The open-source data import desk that is just a database and Claude Code.</strong>
-</p>
+Incoming customer files, field mappings, row corrections and batch approvals in a database you own. An operator's desk for reviewing CSV imports and handing over checked files.
 
-<p align="center">
-  Created by <a href="https://www.enterprisedna.co"><strong>Enterprise DNA</strong></a>. Free and open source. Works with Claude Code, Codex, OpenCode or Cursor.
-</p>
+## Three ways to use it
 
-<!-- three-doors -->
-<table align="center">
-  <tr>
-    <td align="center"><strong>Do it yourself</strong><br/>Clone it, run it, own it. Free, MIT.<br/><a href="#quick-start">Quick start</a></td>
-    <td align="center"><strong>We customise it</strong><br/>Your fields, your rules, your Dromo data brought across.<br/><a href="https://enterprisedna.co/omni/book/?utm_source=github&utm_medium=readme&utm_campaign=dromo">Book a call</a></td>
-    <td align="center"><strong>We run it for you</strong><br/>Installed, connected and operated inside Omni. Setup fee, then a retainer.<br/><a href="https://enterprisedna.co/omni/instead-of/dromo?utm_source=github&utm_medium=readme&utm_campaign=dromo">How it works</a></td>
-  </tr>
-</table>
+**Do it yourself.** Free under MIT. Install, try fictional records and map your exports. Works with Claude Code, Codex, OpenCode or Cursor. Hosting and your coding agent are separate costs.
 
-<p align="center">
-  <a href="#what-is-this">What is this</a> &bull;
-  <a href="#why-no-front-end">Why no front end</a> &bull;
-  <a href="#quick-start">Quick start</a> &bull;
-  <a href="#the-commands">Commands</a> &bull;
-  <a href="#instead-of-dromo">Instead of Dromo</a> &bull;
-  <a href="#want-it-installed-and-run-for-you">Installed for you</a> &bull;
-  <a href="#license">License</a>
-</p>
+**We customise it.** Enterprise DNA maps your Dromo results, adds your field rules and connections, and builds an upload screen if you need one. A different stack is available. One setup fee, then a retainer.
 
-<p align="center">
-  <img src="https://img.shields.io/badge/Node-20+-339933?style=flat-square" alt="Node 20+" />
-  <img src="https://img.shields.io/badge/PostgreSQL-any-336791?style=flat-square" alt="PostgreSQL" />
-  <img src="https://img.shields.io/badge/PGlite-embedded-3ecf8e?style=flat-square" alt="PGlite" />
-  <img src="https://img.shields.io/badge/License-MIT-yellow?style=flat-square" alt="MIT License" />
-</p>
+**We run it for you.** Omni by Enterprise DNA installs and operates your version, with access, backups, reviews and ongoing changes agreed. One setup fee, then a monthly retainer. [Book a 30-minute call](https://enterprisedna.co/omni/book?offer=replace-software&utm_campaign=dromo&utm_medium=github).
 
----
+## Start with fictional records
 
-## What is this
-
-Data Imports for Claude Code does the job you pay Dromo for, as a Postgres database and a set of agent commands. There is no web front end. You open the folder in [Claude Code](https://claude.com/claude-code) (or Codex, OpenCode, Cursor: see `AGENTS.md`) and ask for what you want in plain language. It runs the right query, and it can answer questions the Dromo dashboard cannot.
-
-<!-- TODO(author): the annual bill. One sentence: what a 10 to 50 person business typically pays Dromo per year, all in, with a source. -->
-
-Want the same thing with a web front end, or built on a different stack? That is a customisation, and it is exactly what Enterprise DNA does: [book a call](https://enterprisedna.co/omni/book/?utm_source=github&utm_medium=readme&utm_campaign=dromo).
-
-<!-- TODO(author): two or three sentences on what this specific product covers and who it is for. -->
-
-## Why no front end
-
-- The front end was only ever there because the database was hard to talk to. That is no longer true.
-- Your data sits in plain Postgres tables you own. Any tool can read them. No export, no lock-in.
-- No seats, no tiers, no add-ons. Read [docs/why-no-front-end.md](docs/why-no-front-end.md) for the honest trade-offs too.
-
-## Quick start
-
-Sixty seconds, no database install (an embedded Postgres runs inside Node):
+Node 20 or 22, Windows or Linux.
 
 ```bash
-git clone https://github.com/Enterprise-DNA-OS/data-imports-for-claude-code.git
-cd data-imports-for-claude-code
 npm install
+npm test
 npm run demo
 ```
 
-Then open the folder in Claude Code and type a slash command. <!-- TODO(author): name the first command to try. -->
+Tests use a temporary database and remove it. The demo ignores DATABASE_URL and leaves its separate fictional workspace for inspection. For a persistent local workspace:
 
-### Use it with your own Postgres or Supabase
-
-Copy `.env.example` to `.env`, set `DATABASE_URL`, then `npm run migrate`. Same commands, shared data, no per-seat fee.
-
-## The commands
-
-<!-- TODO(author): a table of the slash commands in .claude/commands and what each one does. -->
-
-| Command | What it does |
-|---|---|
-| `/...` | ... |
-
-## Instead of Dromo
-
-<!-- TODO(author): how to bring data across from Dromo; link docs/replace-dromo.md -->
-
-## Architecture
-
-```
-data-imports-for-claude-code/
-  CLAUDE.md                 how the operator wants this run (routing table + house rules)
-  AGENTS.md                 the same, for Codex / OpenCode / Cursor / Gemini CLI
-  .claude/commands/         the slash commands
-  scripts/                  the CLI the commands drive
-  scripts/lib/db.mjs        one adapter: DATABASE_URL (pg) or embedded PGlite
-  supabase/migrations/      plain SQL schema
-  supabase/seed.sql         demo data
-  docs/                     the thesis and the migration guide
+```bash
+npm run migrate
+npm run seed
+npm run imports -- attention
+npm run view
+npm run docs
 ```
 
-## Built for coding agents
+Migrate without seeding for real records. DATABASE_URL selects PostgreSQL; otherwise DATA_DIR selects local PGlite. Shared seeding requires --demo-database.
 
-The database, CLI and command recipes work with Claude Code, Codex, OpenCode or Cursor. Ask your coding agent for a new command and have it implement and test the change against the same records.
+## What ships
 
-## Contributing
+27 CLI commands and 29 slash commands. Three read-only dashboards show the week, field exceptions and recorded controls. Three document types produce correction requests, acceptance records and handover manifests. Put your business name, colours and logo in brand.json.
 
-Issues and pull requests are welcome. Keep the shape: plain SQL, a small CLI, a slash command per recurring job, no front end.
+Mappings are immutable versions. Original imported values survive corrections. Validation checks required values, integer bounds, dates, email shape, allowed values and batch-local uniqueness. An independent reviewer accepts a clean batch. Approval locks rows. Reopening clears approval, and delivery writes a new local file with a checksum receipt. Nothing is sent and no destination system is changed.
 
-## Want it installed and run for you?
+## Bring Dromo records across
 
-Enterprise DNA installs Data Imports for Claude Code for your business, migrates your Dromo data, connects it to the rest of your tools, and runs it for you as part of **Omni**, our managed Command Center. One setup fee, then a monthly retainer.
+```bash
+npm run imports -- import dromo examples/dromo-results.csv --batch=SWITCH-01 --project=DEMO-NORTH --mapping=SUPPLIERS-V1 --due=2027-01-15 --actor="Operator" --dry-run
+```
 
-- Book a call: [enterprisedna.co/omni/book](https://enterprisedna.co/omni/book/?offer=replace-software&utm_source=github&utm_medium=readme&utm_campaign=dromo)
-- Read more: [enterprisedna.co/omni/instead-of/dromo](https://enterprisedna.co/omni/instead-of/dromo?utm_source=github&utm_medium=readme&utm_campaign=dromo)
+Preview, reconcile and repeat without --dry-run. This example uses the seeded fictional project and mapping. Dromo documents CSV result downloads when backendSyncMode is enabled. Private Mode users need results retained in their own application. Field names depend on your configuration. Preserve original uploads, hooks and history separately. [Full switching guide](docs/replace-dromo.md).
 
-## License
+## Ten questions to ask today
 
-MIT. Copyright (c) 2026 Enterprise DNA.
+Run `npm run imports -- insights`. Each question runs a real query. Dromo supports custom workflows too; this is not a claim that it cannot answer similar questions.
+
+1. Which owners have the most rows needing correction?
+2. Which batches are overdue and still unapproved?
+3. Which fields repeatedly fail validation?
+4. Which batches exclude the largest share of source rows?
+5. Which clean batches are waiting for another reviewer?
+6. Which projects need a retention decision before handover?
+7. Which imported rows have duplicate identifiers?
+8. Which mapping versions produce the most invalid batches?
+9. Which approved batches still lack a handover receipt?
+10. Which source files were loaded into more than one batch?
+
+## Your first hour: ten things to ask for
+
+1. Show this week's batches and owners.
+2. Find overdue imports.
+3. Read the North batch and its source rows.
+4. Find repeated invalid fields.
+5. Correct a field using the source owner's evidence.
+6. Exclude a duplicate and record why.
+7. Validate again and prepare the acceptance record.
+8. Have a different operator review the clean batch.
+9. Draft a correction request and put our name on it.
+10. Add our field through /customise and a report through /new-view.
+
+## Operating boundary
+
+This is a trusted operator workspace, not a multi-tenant service or embedded browser widget. Actor labels are self-declared attribution, not sign-in. Before shared use, configure authenticated identities, least-privilege roles, encryption, controlled report storage, backups and recovery checks. Row security has no public policies; a database owner bypasses it. Source rows and history contain customer data and require an agreed retention/deletion process. The base flags review dates but never deletes records.
+
+Read [compliance checks](docs/compliance.md) and [scope](docs/why-no-front-end.md). A clean batch proves only the configured checks. A person confirms source truth, relevance, privacy authority and exclusions. Exact CSV exports can contain formula-like input; treat them as data in a text editor or a controlled importer. After a crash during delivery, reconcile the file and receipt before retrying.
+
+## Validation
+
+The smoke suite exercises all 27 commands, invalid transitions, duplicate identifiers, locked rows, independent review, retention gates, preview/replay/rollback, complete exports and HTML escaping. The manual CI workflow covers Windows and Linux on Node 20/22, plus disposable PostgreSQL. See actual workflow results before claiming those environments passed.
+
+[CLI reference](docs/cli.md) · [Research and scores](docs/research.md).
+
+MIT. Copyright (c) 2026 Enterprise DNA. Not affiliated with Dromo. Demo data is fictional.

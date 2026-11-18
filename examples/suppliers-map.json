@@ -1,0 +1,43 @@
+[
+  {
+    "key": "supplier_id",
+    "source": "Supplier ID",
+    "type": "text",
+    "required": true,
+    "unique": true,
+    "trim": true
+  },
+  {
+    "key": "name",
+    "source": "Supplier Name",
+    "type": "text",
+    "required": true,
+    "trim": true
+  },
+  {
+    "key": "email",
+    "source": "Contact Email",
+    "type": "email",
+    "required": true,
+    "trim": true,
+    "lowercase": true
+  },
+  {
+    "key": "country",
+    "source": "Country",
+    "type": "enum",
+    "options": [
+      "NZ",
+      "AU"
+    ],
+    "required": true
+  },
+  {
+    "key": "terms_days",
+    "source": "Payment Terms",
+    "type": "integer",
+    "min": 0,
+    "max": 90,
+    "required": true
+  }
+]
